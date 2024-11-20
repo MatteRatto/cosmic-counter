@@ -1,58 +1,63 @@
-Futuristic Counter 🚀
+# Futuristic Counter 🚀
+
 An interactive counter with a futuristic design featuring sci-fi visual effects, including an animated starry background and reactive 3D interface.
 
-![Project Screenshot](./images/screen.png)
+[<img src="./images/screen.png" alt="Project Screenshot" width="400"/>](./screen/screen.png)
 
-Features ✨
+## Features ✨
 
-Futuristic design with neon effects
-3D animated starry background
-Mouse-responsive interface
-Smooth number transitions
-Responsive design
+- Futuristic design with neon effects
+- 3D animated starry background
+- Mouse-responsive interface
+- Smooth number transitions
+- Responsive design
 
-Installation 🛠️
-bashCopy# Clone the repository
+## Installation 🛠️
+
+```bash
+# Clone the repository
 git clone https://github.com/your-username/futuristic-counter.git
 
 # Navigate to directory
-
 cd futuristic-counter
 
 # Open in browser
-
 # Windows
-
 start index.html
-
 # Mac
-
 open index.html
-
 # Linux
-
 xdg-open index.html
-Usage 💻
+```
 
-Click '+' to increment
-Click '-' to decrement
-Move mouse for 3D effect
+## Usage 💻
 
-Customization 🎨
-Modify CSS variables in the style.css file:
-cssCopy:root {
---neon-color: #0ff; /_ Neon effects color _/
---bg-dark: #000013; /_ Background color _/
---highlight: #fff; /_ Text color _/
+- Click '+' to increment
+- Click '-' to decrement
+- Move mouse for 3D effect
+
+## Customization 🎨
+
+Modify CSS variables in the `style.css` file:
+
+```css
+:root {
+  --neon-color: #0ff; /* Neon effects color */
+  --bg-dark: #000013; /* Background color */
+  --highlight: #fff; /* Text color */
 }
+```
 
-Tech Stack 🔧
+## Tech Stack 🔧
 
-HTML5
-CSS3 (Animations and 3D effects)
-Vanilla JavaScript
+- HTML5
+- CSS3 (Animations and 3D effects)
+- Vanilla JavaScript
 
-License 📄
-MIT
+## License 📄
 
-Developed with ❤️ by Matteo Ratto
+[MIT](./LICENSE)
+
+---
+
+_Developed with ❤️ by Matteo Ratto_
