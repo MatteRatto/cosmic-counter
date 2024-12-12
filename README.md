@@ -12,23 +12,9 @@ An interactive counter with a futuristic design featuring sci-fi visual effects,
 - Smooth number transitions
 - Responsive design
 
-## Installation 🛠️
+## Live URL 🌐
 
-```bash
-# Clone the repository
-git clone https://github.com/your-username/futuristic-counter.git
-
-# Navigate to directory
-cd futuristic-counter
-
-# Open in browser
-# Windows
-start index.html
-# Mac
-open index.html
-# Linux
-xdg-open index.html
-```
+[https://futuristiccounter-5c4ad.web.app/]
 
 ## Usage 💻
 
