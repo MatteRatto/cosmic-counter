@@ -14,7 +14,8 @@ An interactive counter with a futuristic design featuring sci-fi visual effects,
 
 ## Live URL 🌐
 
-[https://futuristiccounter-5c4ad.web.app/]
+https://counter-space-project-xyz.web.app
+https://counter-space-project-xyz.firebaseapp.com
 
 ## Usage 💻
 
