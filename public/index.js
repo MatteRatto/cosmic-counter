@@ -10,7 +10,10 @@ for (let i = 0; i < 200; i++) {
   universe.appendChild(star);
 }
 
-const ringsContainer = document.querySelector(".rings");
+const ringsContainer = document.createElement("div");
+ringsContainer.className = "rings";
+document.querySelector(".counter-container").appendChild(ringsContainer);
+
 for (let i = 0; i < 5; i++) {
   const ring = document.createElement("div");
   ring.className = "ring";
@@ -21,7 +24,29 @@ for (let i = 0; i < 5; i++) {
 }
 
 let count = 0;
-const counterElement = document.getElementById("counter");
+
+const counterElement = document.createElement("div");
+counterElement.id = "counter";
+counterElement.className = "counter-value";
+counterElement.setAttribute("data-value", "0");
+counterElement.textContent = "0";
+
+const buttonContainer = document.createElement("div");
+buttonContainer.className = "button-container";
+
+const decreaseBtn = document.createElement("button");
+decreaseBtn.className = "btn";
+decreaseBtn.textContent = "-";
+
+const increaseBtn = document.createElement("button");
+increaseBtn.className = "btn";
+increaseBtn.textContent = "+";
+
+const container = document.querySelector(".counter-container");
+container.appendChild(counterElement);
+buttonContainer.appendChild(decreaseBtn);
+buttonContainer.appendChild(increaseBtn);
+container.appendChild(buttonContainer);
 
 function updateDisplay() {
   counterElement.textContent = count;
@@ -40,6 +65,9 @@ function decrease() {
   count--;
   updateDisplay();
 }
+
+increaseBtn.addEventListener("click", increase);
+decreaseBtn.addEventListener("click", decrease);
 
 document.addEventListener("mousemove", (e) => {
   const xAxis = (window.innerWidth / 2 - e.pageX) / 25;
