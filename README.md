@@ -2,7 +2,7 @@
 
 An interactive counter with a futuristic design featuring sci-fi visual effects, including an animated starry background and reactive 3D interface.
 
-[<img src="./screen/screen.png" alt="Project Screenshot" width="400"/>](./screen/screen.png)
+[<img src="./public/image/screen.png" alt="Project Screenshot" width="400"/>](./public/image/screen.png)
 
 ## Features ✨
 
