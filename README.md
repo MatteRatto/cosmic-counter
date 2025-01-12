@@ -12,6 +12,17 @@ An interactive counter with a futuristic design featuring sci-fi visual effects,
 - Smooth number transitions
 - Responsive design
 
+## Deployment 🚀
+
+This project is deployed using Firebase Hosting. The deployment process is automated through Firebase CLI tools, ensuring seamless updates and reliable hosting.
+
+## Firebase Setup Used:
+
+- Firebase Hosting for static file serving
+- Automated deployment through Firebase CLI
+- Multiple domains support
+- Custom caching rules for optimal performance
+
 ## Live URL 🌐
 
 - https://counter-space-project-xyz.web.app
