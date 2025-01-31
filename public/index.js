@@ -1,8 +1,17 @@
 function createElement(tagName, className, options = {}) {
   const element = document.createElement(tagName);
   if (className) element.className = className;
-  if (options.id) element.id = options.id;
-  if (options.innerHTML) element.innerHTML = options.innerHTML;
+
+  Object.entries(options).forEach(([key, value]) => {
+    if (key === "innerHTML") {
+      element.innerHTML = value;
+    } else if (key === "id") {
+      element.id = value;
+    } else {
+      element.setAttribute(key, value);
+    }
+  });
+
   return element;
 }
 
@@ -43,18 +52,20 @@ function createCounter() {
   const container = document.querySelector(".counter-container");
   const counterElement = createElement("div", "counter-value", {
     id: "counter",
+    "data-value": "0",
   });
-  counterElement.setAttribute("data-value", "0");
   counterElement.textContent = "0";
 
   const buttonContainer = createElement("div", "button-container");
   const decreaseBtn = createElement("button", "btn", {
     innerHTML: "-",
     id: "decrease",
+    "data-action": "decrease",
   });
   const increaseBtn = createElement("button", "btn", {
     innerHTML: "+",
     id: "increase",
+    "data-action": "increase",
   });
 
   buttonContainer.appendChild(decreaseBtn);
@@ -70,6 +81,7 @@ function initializeApp() {
   let count = 0;
   const counterElement = createCounter();
   const wrapper = document.querySelector(".counter-wrapper");
+  let ticking = false;
 
   function updateDisplay() {
     counterElement.textContent = count;
@@ -79,26 +91,37 @@ function initializeApp() {
     counterElement.classList.add("change");
   }
 
-  document.addEventListener("click", (e) => {
+  document.addEventListener("mousemove", (e) => {
     const target = e.target;
 
-    if (target.classList.contains("btn")) {
-      count += target.id === "increase" ? 1 : -1;
+    if (e.type === "click" && target.classList.contains("btn")) {
+      count += target.dataset.action === "increase" ? 1 : -1;
       updateDisplay();
+      return;
+    }
+
+    if (e.type === "mousemove") {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          const xAxis = (window.innerWidth / 2 - e.pageX) / 25;
+          const yAxis = (window.innerHeight / 2 - e.pageY) / 25;
+          wrapper.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
+          ticking = false;
+        });
+        ticking = true;
+      }
     }
   });
 
-  let ticking = false;
-  document.addEventListener("mousemove", (e) => {
-    if (!ticking) {
-      window.requestAnimationFrame(() => {
-        const xAxis = (window.innerWidth / 2 - e.pageX) / 25;
-        const yAxis = (window.innerHeight / 2 - e.pageY) / 25;
-        wrapper.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
-        ticking = false;
-      });
-      ticking = true;
-    }
+  document.addEventListener("click", (e) => {
+    document.dispatchEvent(
+      new MouseEvent("mousemove", {
+        bubbles: true,
+        cancelable: true,
+        view: window,
+        ...e,
+      })
+    );
   });
 
   createStars();
