@@ -2,38 +2,16 @@
   --neon-color: #0ff;
   --bg-dark: #000013;
   --highlight: #fff;
+  --duration: 5s;
+  --opacity: 0.7;
 }
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-body {
-  min-height: 100vh;
-  background: var(--bg-dark);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-family: "Arial", sans-serif;
-  overflow: hidden;
-}
-
-.universe {
-  position: fixed;
-  width: 100vw;
-  height: 100vh;
+.perspective-1000 {
   perspective: 1000px;
-  transform-style: preserve-3d;
 }
 
-.star {
-  position: absolute;
-  background: #fff;
-  border-radius: 50%;
-  animation: starTravel var(--duration) linear infinite;
-  opacity: var(--opacity);
+.preserve-3d {
+  transform-style: preserve-3d;
 }
 
 @keyframes starTravel {
@@ -45,39 +23,6 @@ body {
   }
 }
 
-.counter-wrapper {
-  position: relative;
-  transform-style: preserve-3d;
-  animation: floatEffect 8s ease-in-out infinite;
-}
-
-.counter-container {
-  position: relative;
-  width: 400px;
-  height: 400px;
-  background: rgba(0, 255, 255, 0.03);
-  border-radius: 20px;
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(0, 255, 255, 0.1);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 40px;
-  overflow: hidden;
-}
-
-.hexagon-bg {
-  position: absolute;
-  width: 200%;
-  height: 200%;
-  background: linear-gradient(90deg, var(--bg-dark) 46%, transparent 50%) 0 0/8px
-      8px,
-    linear-gradient(90deg, transparent 46%, var(--bg-dark) 50%) 4px 4px/8px 8px;
-  opacity: 0.3;
-  animation: hexMove 20s linear infinite;
-}
-
 @keyframes hexMove {
   from {
     transform: translate(-50%, -50%) rotate(0deg);
@@ -85,6 +30,106 @@ body {
   to {
     transform: translate(-50%, -50%) rotate(360deg);
   }
+}
+
+@keyframes floatEffect {
+  0%,
+  100% {
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    transform: translateY(-20px) scale(1.02);
+  }
+}
+
+@keyframes glowPulse {
+  0%,
+  100% {
+    opacity: 0.5;
+    transform: scale(1.05);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(0.95);
+  }
+}
+
+@keyframes plasmaMove {
+  0% {
+    transform: translate(-50%, -50%) rotate(0deg) scale(1);
+  }
+  50% {
+    transform: translate(-50%, -50%) rotate(180deg) scale(1.2);
+  }
+  100% {
+    transform: translate(-50%, -50%) rotate(360deg) scale(1);
+  }
+}
+
+@keyframes ringsRotate {
+  from {
+    transform: rotateX(60deg) rotateZ(0deg);
+  }
+  to {
+    transform: rotateX(60deg) rotateZ(360deg);
+  }
+}
+
+@keyframes numberChange {
+  0% {
+    transform: scale(1) translateZ(0) rotate(0deg);
+  }
+  50% {
+    transform: scale(1.2) translateZ(50px) rotate(5deg);
+  }
+  100% {
+    transform: scale(1) translateZ(0) rotate(0deg);
+  }
+}
+
+.star {
+  position: absolute;
+  background: #fff;
+  border-radius: 50%;
+  animation: starTravel var(--duration) linear infinite;
+  opacity: var(--opacity);
+}
+
+.counter-wrapper {
+  animation: floatEffect 8s ease-in-out infinite;
+}
+
+.hexagon-bg {
+  background: linear-gradient(90deg, var(--bg-dark) 46%, transparent 50%) 0 0/8px
+      8px,
+    linear-gradient(90deg, transparent 46%, var(--bg-dark) 50%) 4px 4px/8px 8px;
+  animation: hexMove 20s linear infinite;
+}
+
+.plasma {
+  background: radial-gradient(
+    circle,
+    rgba(0, 255, 255, 0.1) 0%,
+    transparent 70%
+  );
+  animation: plasmaMove 15s linear infinite;
+}
+
+.rings {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  animation: ringsRotate 20s linear infinite;
+}
+
+.ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  border: 1px solid rgba(0, 255, 255, 0.3);
+  border-radius: 50%;
+  transform-style: preserve-3d;
 }
 
 .counter-value {
@@ -157,101 +202,11 @@ body {
   transform: scale(0.95);
 }
 
-.plasma {
-  position: absolute;
-  width: 600px;
-  height: 600px;
-  background: radial-gradient(
-    circle,
-    rgba(0, 255, 255, 0.1) 0%,
-    transparent 70%
-  );
-  animation: plasmaMove 15s linear infinite;
-}
-
-@keyframes plasmaMove {
-  0% {
-    transform: translate(-50%, -50%) rotate(0deg) scale(1);
-  }
-  50% {
-    transform: translate(-50%, -50%) rotate(180deg) scale(1.2);
-  }
-  100% {
-    transform: translate(-50%, -50%) rotate(360deg) scale(1);
-  }
-}
-
-.rings {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  transform-style: preserve-3d;
-  animation: ringsRotate 20s linear infinite;
-}
-
-@keyframes ringsRotate {
-  from {
-    transform: rotateX(60deg) rotateZ(0deg);
-  }
-  to {
-    transform: rotateX(60deg) rotateZ(360deg);
-  }
-}
-
-.ring {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  border: 1px solid rgba(0, 255, 255, 0.3);
-  border-radius: 50%;
-  transform-style: preserve-3d;
-}
-
-@keyframes glowPulse {
-  0%,
-  100% {
-    opacity: 0.5;
-    transform: scale(1.05);
-  }
-  50% {
-    opacity: 1;
-    transform: scale(0.95);
-  }
-}
-
-@keyframes floatEffect {
-  0%,
-  100% {
-    transform: translateY(0) scale(1);
-  }
-  50% {
-    transform: translateY(-20px) scale(1.02);
-  }
-}
-
 .counter-value.change {
   animation: numberChange 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-@keyframes numberChange {
-  0% {
-    transform: scale(1) translateZ(0) rotate(0deg);
-  }
-  50% {
-    transform: scale(1.2) translateZ(50px) rotate(5deg);
-  }
-  100% {
-    transform: scale(1) translateZ(0) rotate(0deg);
-  }
-}
-
 @media (max-width: 768px) {
-  .counter-container {
-    width: 300px;
-    height: 300px;
-    gap: 20px;
-  }
-
   .counter-value {
     font-size: 80px;
   }
@@ -265,23 +220,9 @@ body {
   .button-container {
     gap: 20px;
   }
-
-  .plasma {
-    width: 400px;
-    height: 400px;
-  }
-
-  .ring {
-    transform: scale(0.7);
-  }
 }
 
 @media (max-width: 480px) {
-  .counter-container {
-    width: 250px;
-    height: 250px;
-  }
-
   .counter-value {
     font-size: 60px;
   }
