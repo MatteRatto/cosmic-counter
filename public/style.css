@@ -4,6 +4,8 @@
   --highlight: #fff;
   --duration: 5s;
   --opacity: 0.7;
+  --transition-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .perspective-1000 {
@@ -12,6 +14,7 @@
 
 .preserve-3d {
   transform-style: preserve-3d;
+  will-change: transform;
 }
 
 @keyframes starTravel {
@@ -47,22 +50,27 @@
   100% {
     opacity: 0.5;
     transform: scale(1.05);
+    filter: blur(5px);
   }
   50% {
     opacity: 1;
     transform: scale(0.95);
+    filter: blur(8px);
   }
 }
 
 @keyframes plasmaMove {
   0% {
     transform: translate(-50%, -50%) rotate(0deg) scale(1);
+    opacity: 0.6;
   }
   50% {
     transform: translate(-50%, -50%) rotate(180deg) scale(1.2);
+    opacity: 0.8;
   }
   100% {
     transform: translate(-50%, -50%) rotate(360deg) scale(1);
+    opacity: 0.6;
   }
 }
 
@@ -78,12 +86,15 @@
 @keyframes numberChange {
   0% {
     transform: scale(1) translateZ(0) rotate(0deg);
+    filter: blur(0px);
   }
   50% {
     transform: scale(1.2) translateZ(50px) rotate(5deg);
+    filter: blur(1px);
   }
   100% {
     transform: scale(1) translateZ(0) rotate(0deg);
+    filter: blur(0px);
   }
 }
 
@@ -93,10 +104,13 @@
   border-radius: 50%;
   animation: starTravel var(--duration) linear infinite;
   opacity: var(--opacity);
+  box-shadow: 0 0 4px rgba(255, 255, 255, 0.8);
 }
 
 .counter-wrapper {
-  animation: floatEffect 8s ease-in-out infinite;
+  animation: floatEffect 8s var(--transition-smooth) infinite;
+  transition: transform 0.5s var(--transition-smooth);
+  will-change: transform;
 }
 
 .hexagon-bg {
@@ -104,6 +118,8 @@
       8px,
     linear-gradient(90deg, transparent 46%, var(--bg-dark) 50%) 4px 4px/8px 8px;
   animation: hexMove 20s linear infinite;
+  opacity: 0.3;
+  transition: opacity 0.8s ease;
 }
 
 .plasma {
@@ -112,7 +128,9 @@
     rgba(0, 255, 255, 0.1) 0%,
     transparent 70%
   );
-  animation: plasmaMove 15s linear infinite;
+  animation: plasmaMove 15s var(--transition-smooth) infinite;
+  filter: blur(8px);
+  will-change: transform, opacity;
 }
 
 .rings {
@@ -121,6 +139,7 @@
   height: 100%;
   transform-style: preserve-3d;
   animation: ringsRotate 20s linear infinite;
+  will-change: transform;
 }
 
 .ring {
@@ -130,6 +149,9 @@
   border: 1px solid rgba(0, 255, 255, 0.3);
   border-radius: 50%;
   transform-style: preserve-3d;
+  box-shadow: 0 0 15px rgba(0, 255, 255, 0.2);
+  transition: border 0.3s ease, box-shadow 0.3s ease;
+  will-change: transform, box-shadow;
 }
 
 .counter-value {
@@ -139,6 +161,8 @@
     0 0 20px var(--neon-color), 0 0 40px var(--neon-color);
   position: relative;
   z-index: 2;
+  transition: text-shadow 0.3s ease;
+  will-change: transform, text-shadow;
 }
 
 .counter-value::before,
@@ -150,6 +174,7 @@
   opacity: 0.5;
   filter: blur(5px);
   transform-origin: center;
+  will-change: transform, opacity, filter;
 }
 
 .counter-value::before {
@@ -179,7 +204,8 @@
   cursor: pointer;
   position: relative;
   overflow: hidden;
-  transition: transform 0.3s ease;
+  transition: transform 0.3s var(--transition-bounce), color 0.3s ease;
+  user-select: none;
 }
 
 .btn::before {
@@ -190,20 +216,36 @@
   border-radius: 50%;
   box-shadow: 0 0 5px var(--neon-color), 0 0 10px var(--neon-color) inset;
   z-index: -1;
-  transition: all 0.3s ease;
+  transition: all 0.4s var(--transition-smooth);
 }
 
 .btn:hover::before {
   background: rgba(0, 255, 255, 0.2);
   box-shadow: 0 0 20px var(--neon-color), 0 0 40px var(--neon-color) inset;
+  transform: scale(1.05);
 }
 
 .btn:active {
-  transform: scale(0.95);
+  transform: scale(0.9);
 }
 
 .counter-value.change {
-  animation: numberChange 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  animation: numberChange 0.5s var(--transition-bounce);
+}
+
+/* Glow effect on hover */
+.counter-container:hover .plasma {
+  filter: blur(10px);
+  opacity: 0.8;
+}
+
+.counter-container:hover .hexagon-bg {
+  opacity: 0.4;
+}
+
+.counter-container:hover .ring {
+  border-color: rgba(0, 255, 255, 0.5);
+  box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
 }
 
 @media (max-width: 768px) {
