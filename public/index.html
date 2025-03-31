@@ -1,19 +1,273 @@
 <!DOCTYPE html>
-<html>
+<html lang="it">
   <head>
-    <link rel="stylesheet" href="./style.css" />
-    <link rel="icon" href="image/galassia.ico" type="image/x-icon" />
+    <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Futuristic Counter</title>
+    <link rel="icon" href="image/galassia.ico" type="image/x-icon" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              neon: "#0ff",
+              "bg-dark": "#000013",
+            },
+            animation: {
+              "star-travel": "starTravel var(--duration) linear infinite",
+              float: "floatEffect 8s ease-in-out infinite",
+              "hex-move": "hexMove 20s linear infinite",
+              "glow-pulse": "glowPulse 2s ease-in-out infinite",
+              "plasma-move": "plasmaMove 15s linear infinite",
+              "rings-rotate": "ringsRotate 20s linear infinite",
+              "number-change": "numberChange 0.5s cubic-bezier(0.4, 0, 0.2, 1)",
+            },
+            keyframes: {
+              starTravel: {
+                from: { transform: "translateZ(0) translateX(100vw)" },
+                to: { transform: "translateZ(1000px) translateX(-100vw)" },
+              },
+              floatEffect: {
+                "0%, 100%": { transform: "translateY(0) scale(1)" },
+                "50%": { transform: "translateY(-20px) scale(1.02)" },
+              },
+              hexMove: {
+                from: { transform: "translate(-50%, -50%) rotate(0deg)" },
+                to: { transform: "translate(-50%, -50%) rotate(360deg)" },
+              },
+              glowPulse: {
+                "0%, 100%": { opacity: "0.5", transform: "scale(1.05)" },
+                "50%": { opacity: "1", transform: "scale(0.95)" },
+              },
+              plasmaMove: {
+                "0%": {
+                  transform: "translate(-50%, -50%) rotate(0deg) scale(1)",
+                },
+                "50%": {
+                  transform: "translate(-50%, -50%) rotate(180deg) scale(1.2)",
+                },
+                "100%": {
+                  transform: "translate(-50%, -50%) rotate(360deg) scale(1)",
+                },
+              },
+              ringsRotate: {
+                from: { transform: "rotateX(60deg) rotateZ(0deg)" },
+                to: { transform: "rotateX(60deg) rotateZ(360deg)" },
+              },
+              numberChange: {
+                "0%": { transform: "scale(1) translateZ(0) rotate(0deg)" },
+                "50%": {
+                  transform: "scale(1.2) translateZ(50px) rotate(5deg)",
+                },
+                "100%": { transform: "scale(1) translateZ(0) rotate(0deg)" },
+              },
+            },
+          },
+        },
+      };
+    </script>
+    <style type="text/css">
+      :root {
+        --neon-color: #0ff;
+        --bg-dark: #000013;
+        --highlight: #fff;
+        --duration: 5s;
+        --opacity: 0.7;
+      }
+
+      .perspective-1000 {
+        perspective: 1000px;
+      }
+
+      .preserve-3d {
+        transform-style: preserve-3d;
+      }
+
+      @keyframes starTravel {
+        from {
+          transform: translateZ(0) translateX(100vw);
+        }
+        to {
+          transform: translateZ(1000px) translateX(-100vw);
+        }
+      }
+
+      @keyframes hexMove {
+        from {
+          transform: translate(-50%, -50%) rotate(0deg);
+        }
+        to {
+          transform: translate(-50%, -50%) rotate(360deg);
+        }
+      }
+
+      @keyframes floatEffect {
+        0%,
+        100% {
+          transform: translateY(0) scale(1);
+        }
+        50% {
+          transform: translateY(-20px) scale(1.02);
+        }
+      }
+
+      @keyframes glowPulse {
+        0%,
+        100% {
+          opacity: 0.5;
+          transform: scale(1.05);
+        }
+        50% {
+          opacity: 1;
+          transform: scale(0.95);
+        }
+      }
+
+      @keyframes plasmaMove {
+        0% {
+          transform: translate(-50%, -50%) rotate(0deg) scale(1);
+        }
+        50% {
+          transform: translate(-50%, -50%) rotate(180deg) scale(1.2);
+        }
+        100% {
+          transform: translate(-50%, -50%) rotate(360deg) scale(1);
+        }
+      }
+
+      @keyframes ringsRotate {
+        from {
+          transform: rotateX(60deg) rotateZ(0deg);
+        }
+        to {
+          transform: rotateX(60deg) rotateZ(360deg);
+        }
+      }
+
+      @keyframes numberChange {
+        0% {
+          transform: scale(1) translateZ(0) rotate(0deg);
+        }
+        50% {
+          transform: scale(1.2) translateZ(50px) rotate(5deg);
+        }
+        100% {
+          transform: scale(1) translateZ(0) rotate(0deg);
+        }
+      }
+
+      .star {
+        animation: starTravel var(--duration) linear infinite;
+        opacity: var(--opacity);
+      }
+
+      .hexagon-bg {
+        background: linear-gradient(90deg, var(--bg-dark) 46%, transparent 50%)
+            0 0/8px 8px,
+          linear-gradient(90deg, transparent 46%, var(--bg-dark) 50%) 4px 4px/8px
+            8px;
+        animation: hexMove 20s linear infinite;
+      }
+
+      .counter-wrapper {
+        animation: floatEffect 8s ease-in-out infinite;
+      }
+
+      .plasma {
+        background: radial-gradient(
+          circle,
+          rgba(0, 255, 255, 0.1) 0%,
+          transparent 70%
+        );
+        animation: plasmaMove 15s linear infinite;
+      }
+
+      .rings {
+        animation: ringsRotate 20s linear infinite;
+      }
+
+      .neon-text {
+        text-shadow: 0 0 5px var(--neon-color), 0 0 10px var(--neon-color),
+          0 0 20px var(--neon-color), 0 0 40px var(--neon-color);
+      }
+
+      .neon-text::before,
+      .neon-text::after {
+        content: attr(data-value);
+        position: absolute;
+        top: 0;
+        left: 0;
+        opacity: 0.5;
+        filter: blur(5px);
+        transform-origin: center;
+      }
+
+      .neon-text::before {
+        text-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+        animation: glowPulse 2s ease-in-out infinite;
+      }
+
+      .neon-text::after {
+        text-shadow: 0 0 40px rgba(255, 255, 255, 0.5);
+        animation: glowPulse 2s ease-in-out infinite reverse;
+      }
+
+      .neon-button::before {
+        content: "";
+        position: absolute;
+        inset: 2px;
+        background: rgba(0, 255, 255, 0.1);
+        border-radius: 9999px;
+        box-shadow: 0 0 5px var(--neon-color), 0 0 10px var(--neon-color) inset;
+        z-index: -1;
+        transition: all 0.3s ease;
+      }
+
+      .neon-button:hover::before {
+        background: rgba(0, 255, 255, 0.2);
+        box-shadow: 0 0 20px var(--neon-color), 0 0 40px var(--neon-color) inset;
+      }
+    </style>
   </head>
-  <body>
-    <div class="universe"></div>
-    <div class="counter-wrapper">
-      <div class="counter-container" id="main-container">
-        <div class="hexagon-bg"></div>
-        <div class="plasma"></div>
-        <div class="rings"></div>
+  <body
+    class="min-h-screen bg-[#000013] flex justify-center items-center font-sans overflow-hidden"
+  >
+    <div
+      id="universe"
+      class="fixed w-screen h-screen perspective-1000 preserve-3d"
+    ></div>
+
+    <div class="counter-wrapper relative preserve-3d">
+      <div
+        id="main-container"
+        class="counter-container relative w-96 h-96 bg-cyan-500 bg-opacity-[0.03] rounded-3xl backdrop-blur-md border border-cyan-500 border-opacity-10 flex flex-col justify-center items-center gap-10 overflow-hidden md:w-80 md:h-80 sm:w-64 sm:h-64"
+      >
+        <div class="hexagon-bg absolute w-[200%] h-[200%] opacity-30"></div>
+
+        <div
+          class="plasma absolute w-[600px] h-[600px] md:w-[400px] md:h-[400px]"
+        ></div>
+
+        <div class="rings absolute w-full h-full preserve-3d"></div>
+
+        <div
+          id="counter"
+          class="counter-value text-8xl text-white neon-text relative z-10 md:text-6xl sm:text-5xl"
+          data-value="0"
+        >
+          0
+        </div>
+
+        <div
+          id="button-container"
+          class="button-container flex gap-10 z-10 md:gap-5"
+        ></div>
       </div>
     </div>
-    <script src="./index.js"></script>
+
+    <script>
+      src = "./index.js";
+    </script>
   </body>
 </html>
