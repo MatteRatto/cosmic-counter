@@ -1,44 +1,3 @@
-function createElement(tagName, className, options = {}) {
-  const element = document.createElement(tagName);
-  if (className) element.className = className;
-
-  Object.entries(options).forEach(([key, value]) => {
-    if (key === "innerHTML") {
-      element.innerHTML = value;
-    } else if (key === "id") {
-      element.id = value;
-    } else {
-      element.setAttribute(key, value);
-    }
-  });
-
-  return element;
-}
-
-function createStars() {
-  const universe = document.querySelector(".universe");
-  const fragment = document.createDocumentFragment();
-  const starCount = window.innerWidth < 768 ? 150 : 200;
-
-  for (let i = 0; i < starCount; i++) {
-    const star = createElement("div", "star");
-    star.style.setProperty("--duration", `${Math.random() * 5 + 3}s`);
-    star.style.setProperty("--opacity", Math.random() * 0.8 + 0.2);
-
-    const size = Math.random() * 3 + 1;
-    star.style.width = star.style.height = `${size}px`;
-
-    star.style.top = `${Math.random() * 100}%`;
-    star.style.left = `${Math.random() * 100}%`;
-
-    star.style.animationDelay = `${Math.random() * 5}s`;
-
-    fragment.appendChild(star);
-  }
-
-  universe.appendChild(fragment);
-}
-
 function createRings() {
   const ringsContainer = createElement("div", "rings");
   const fragment = document.createDocumentFragment();
@@ -48,14 +7,11 @@ function createRings() {
     const size = 150 + i * 50;
     ring.style.width = ring.style.height = `${size}px`;
 
-    const randomX = Math.random() * 20 - 10;
-    const randomZ = i * 10;
-
-    ring.style.transform = `translate(-50%, -50%) rotateX(${randomX}deg) rotateZ(${randomZ}deg)`;
-
+    ring.style.transform = `translate(-50%, -50%) rotateX(${
+      Math.random() * 20 - 10
+    }deg) rotateZ(${i * 10}deg)`;
     ring.style.opacity = 0.7 - i * 0.1;
     ring.style.animationDuration = `${20 + i * 5}s`;
-
     ring.style.animationDelay = `${-i * 2}s`;
 
     fragment.appendChild(ring);
@@ -63,35 +19,6 @@ function createRings() {
 
   ringsContainer.appendChild(fragment);
   document.querySelector(".counter-container").appendChild(ringsContainer);
-}
-
-function createCounter() {
-  const container = document.querySelector(".counter-container");
-  const counterElement = createElement("div", "counter-value", {
-    id: "counter",
-    "data-value": "0",
-  });
-  counterElement.textContent = "0";
-
-  const buttonContainer = createElement("div", "button-container");
-  const decreaseBtn = createElement("button", "btn", {
-    innerHTML: "-",
-    id: "decrease",
-    "data-action": "decrease",
-  });
-  const increaseBtn = createElement("button", "btn", {
-    innerHTML: "+",
-    id: "increase",
-    "data-action": "increase",
-  });
-
-  buttonContainer.appendChild(decreaseBtn);
-  buttonContainer.appendChild(increaseBtn);
-
-  container.appendChild(counterElement);
-  container.appendChild(buttonContainer);
-
-  return counterElement;
 }
 
 function initializeApp() {
@@ -157,23 +84,41 @@ function initializeApp() {
 
   document.addEventListener("click", handleButtonClick);
 
-  document.addEventListener("mousemove", (e) => {
+  function handleMouseMoveForRings(e) {
     if (!ticking) {
       requestAnimationFrame(() => {
         const rings = document.querySelectorAll(".ring");
-        const xPercent = e.clientX / window.innerWidth;
-        const yPercent = e.clientY / window.innerHeight;
+        const container = document.querySelector(".counter-container");
+
+        const containerRect = container.getBoundingClientRect();
+
+        const mouseX = e.clientX - containerRect.left;
+        const mouseY = e.clientY - containerRect.top;
+
+        const isInsideContainer =
+          mouseX >= 0 &&
+          mouseX <= containerRect.width &&
+          mouseY >= 0 &&
+          mouseY <= containerRect.height;
+
+        const xPercent = isInsideContainer ? mouseX / containerRect.width : 0.5;
+
+        const yPercent = isInsideContainer
+          ? mouseY / containerRect.height
+          : 0.5;
+
+        const maxMovement = containerRect.width * 0.15;
 
         rings.forEach((ring, index) => {
-          const depth = (index + 1) * 2;
-          const moveX = (xPercent - 0.5) * depth;
-          const moveY = (yPercent - 0.5) * depth;
+          const sizeFactor = 1 - index / 5;
+          const depth = (index + 1) * 2 * sizeFactor;
 
-          const currentTransform = ring.style.transform;
-          const baseTransform = currentTransform.split("rotateX")[0];
-          const rotation = currentTransform.match(/rotateX\(([^)]+)\)/)[0];
+          const moveX = (xPercent - 0.5) * maxMovement * depth;
+          const moveY = (yPercent - 0.5) * maxMovement * depth;
 
-          ring.style.transform = `${baseTransform} translateX(${moveX}px) translateY(${moveY}px) ${rotation}`;
+          ring.style.transform = `translate(calc(-50% + ${moveX}px), calc(-50% + ${moveY}px)) rotateX(${
+            Math.random() * 20 - 10
+          }deg) rotateZ(${index * 10}deg)`;
         });
 
         ticking = false;
@@ -181,11 +126,19 @@ function initializeApp() {
 
       ticking = true;
     }
-  });
+  }
+
+  document.addEventListener("mousemove", handleMouseMoveForRings);
 
   document.addEventListener("touchmove", (e) => {
     if (e.touches.length === 1) {
       const touch = e.touches[0];
+
+      handleMouseMoveForRings({
+        clientX: touch.clientX,
+        clientY: touch.clientY,
+      });
+
       const xAxis = (window.innerWidth / 2 - touch.clientX) / 15;
       const yAxis = (window.innerHeight / 2 - touch.clientY) / 15;
 
