@@ -7,12 +7,10 @@ function createRings() {
     const size = 150 + i * 50;
     ring.style.width = ring.style.height = `${size}px`;
 
-    ring.style.transform = `translate(-50%, -50%) rotateX(${
-      Math.random() * 20 - 10
-    }deg) rotateZ(${i * 10}deg)`;
+    ring.style.transform = `translate(-50%, -50%) rotateX(0deg) rotateZ(${
+      i * 10
+    }deg)`;
     ring.style.opacity = 0.7 - i * 0.1;
-    ring.style.animationDuration = `${20 + i * 5}s`;
-    ring.style.animationDelay = `${-i * 2}s`;
 
     fragment.appendChild(ring);
   }
@@ -92,32 +90,23 @@ function initializeApp() {
 
         const containerRect = container.getBoundingClientRect();
 
-        const mouseX = e.clientX - containerRect.left;
-        const mouseY = e.clientY - containerRect.top;
+        const mouseX = e.clientX;
+        const mouseY = e.clientY;
 
-        const isInsideContainer =
-          mouseX >= 0 &&
-          mouseX <= containerRect.width &&
-          mouseY >= 0 &&
-          mouseY <= containerRect.height;
+        const containerCenterX = containerRect.left + containerRect.width / 2;
+        const containerCenterY = containerRect.top + containerRect.height / 2;
 
-        const xPercent = isInsideContainer ? mouseX / containerRect.width : 0.5;
-
-        const yPercent = isInsideContainer
-          ? mouseY / containerRect.height
-          : 0.5;
-
-        const maxMovement = containerRect.width * 0.15;
+        const moveFactorX = (mouseX - containerCenterX) / 15;
+        const moveFactorY = (mouseY - containerCenterY) / 15;
 
         rings.forEach((ring, index) => {
-          const sizeFactor = 1 - index / 5;
-          const depth = (index + 1) * 2 * sizeFactor;
+          const sizeFactor = 1.5 - index * 0.2;
 
-          const moveX = (xPercent - 0.5) * maxMovement * depth;
-          const moveY = (yPercent - 0.5) * maxMovement * depth;
+          const moveX = moveFactorX * sizeFactor;
+          const moveY = moveFactorY * sizeFactor;
 
-          ring.style.transform = `translate(calc(-50% + ${moveX}px), calc(-50% + ${moveY}px)) rotateX(${
-            Math.random() * 20 - 10
+          ring.style.transform = `translate(${moveX}px, ${moveY}px) translate(-50%, -50%) rotateX(${
+            Math.random() * 10
           }deg) rotateZ(${index * 10}deg)`;
         });
 

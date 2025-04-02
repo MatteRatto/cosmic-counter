@@ -133,15 +133,6 @@
   will-change: transform, opacity;
 }
 
-.rings {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  transform-style: preserve-3d;
-  animation: ringsRotate 20s linear infinite;
-  will-change: transform;
-}
-
 .ring {
   position: absolute;
   top: 50%;
